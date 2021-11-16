@@ -14,6 +14,7 @@ from datetime import date
 from datetime import datetime
 import threading
 
+
 today = date.today()
 d4 = today.strftime("%Y%m%d")
 print(d4)
@@ -64,7 +65,6 @@ def vroom_scrape():
     print(vroom_df)
     browser.get(vroom)
     browser.set_page_load_timeout(10)
-    browser.maximize_window()
     next_button = True
     last_url = ''
     count = 0
@@ -80,11 +80,10 @@ def vroom_scrape():
         for element in elements:
             #find details of each element
             #url = element.find_element_by_xpath(f'//*[@id="__next"]/div/div/div[3]/div/div[2]/div/div[{elements.index(element)+1}]/div/a').get_attribute('href')
-            print(count)
             url = element.find_elements_by_xpath("//a[@data-element='HiddenAnchor']")[count].get_attribute('href')
             count += 1
             #img
-            image = ''
+            image = element.find_elements_by_xpath("//img[@data-element='Photo']")[elements.index(element)].get_attribute('src')
             model = element.find_element_by_xpath(f'/html/body/div[1]/div/div/div[3]/div/div[2]/div/div[{elements.index(element)+1}]/div/a/div[2]/div/p[1]').get_attribute('innerHTML')[-7:]
             year = int(element.find_element_by_xpath(f'//*[@id="__next"]/div/div/div[3]/div/div[2]/div/div[{elements.index(element)+1}]/div/a/div[2]/div/p[1]').get_attribute('innerHTML')[:4])
             price = element.find_element_by_xpath(f'/html/body/div[1]/div/div/div[3]/div/div[2]/div/div[{elements.index(element)+1}]/div/a/div[2]/div/p[2]').get_attribute('innerHTML')
@@ -98,7 +97,7 @@ def vroom_scrape():
                 status = "Available Now"
             else:
                 status = element.find_elements_by_xpath(f'/html/body/div[1]/div/div/div[3]/div/div[2]/div/div[{elements.index(element)+1}]/div/a/div[2]/p')[0].get_attribute('innerHTML')
-            print(url, model, year, price, miles, type, color, status)
+            print(url, model, year, price, miles, type, color, status, image)
             new_row = {'url': url, 'model': model, 'year': int(year), 'price': int(num_price), 'miles': int(num_miles), 'type': type, 'color': color, 'status': status, 'image': image}
             vroom_df = vroom_df.append(new_row, ignore_index=True)
         next_button_clickable = browser.find_elements_by_xpath('/html/body/div[1]/div/div/div[3]/div/nav/ul/li[9]')
@@ -132,7 +131,6 @@ def shift_scrape():
     print(shift_df)
     browser.get(shift)
     browser.set_page_load_timeout(20)
-    browser.maximize_window()
     next_button = True
     last_url = ''
     while next_button:
@@ -149,7 +147,7 @@ def shift_scrape():
         for element in elements:
             #find details of each element
             #image = element.find_element_by_xpath(f'/html/body/div[1]/div/div/div[2]/div[2]/div[5]/a[{elements.index(element)+1}]/div/div/div[1]/img').get_attribute('src')
-            image = WebDriverWait(browser, 20).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "img._3WEbGjQbERZrIJuNiXxofi"))).get_attribute("src")
+            image = element.find_element_by_tag_name('img').get_attribute('data-src')
             #image = element.find_element_by_css_selector('img._3WEbGjQbERZrIJuNiXxofi').get_attribute('src')
             url = element.find_element_by_xpath(f'/html/body/div[1]/div/div/div[2]/div[2]/div[5]/a[{elements.index(element)+1}]').get_attribute('href')
             model = element.find_element_by_xpath(f'/html/body/div[1]/div/div/div[2]/div[2]/div[5]/a[{elements.index(element)+1}]/div/div/div[2]/div[1]/div[1]/div[2]').get_attribute('innerHTML')[-7:]
@@ -212,7 +210,6 @@ def carvana_scrape():
     carvana_df = pd.DataFrame(data)
     print(carvana_df)
     browser.get(carvana)
-    browser.maximize_window()
     browser.set_page_load_timeout(50)
     next_button = True
     last_url = ''
@@ -233,21 +230,18 @@ def carvana_scrape():
         #go through each element of first page
         for element in elements:
             #check available
-            status_check = element.find_elements_by_xpath(f'//*[@id="results-section"]/article[{elements.index(element)+1}]/a/div[2]/span')
+            status_check = element.find_elements_by_class_name(f'purchase-callout')
             if len(status_check) == 0:
                 status = "Available"
             else:
-                status = status_check[0].get_attribute('innerHTML')
-                if len(status) > 40: #if pulling large html
-                    status = "On Hold"
-                else:
-                    status = status
+                status_text = status_check[0].get_attribute('class').split(" ")[1].title()
+                status = status_text
 
             image_check = element.find_elements_by_xpath(f'//*[@id="results-section"]/article[{elements.index(element)+1}]/a/div[1]/img')
             if len(image_check) > 0:
-                image = WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.XPATH, f'//*[@id="results-section"]/article[{elements.index(element)+1}]/a/div[1]/img'))).get_attribute("src")
+                image = element.find_elements_by_xpath("//img[@loading='lazy']")[elements.index(element)].get_attribute('src')
             else:
-                image = WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.XPATH, "//img[@loading='lazy']"))).get_attribute("src")
+                image = element.find_elements_by_xpath("//img[@loading='lazy']")[elements.index(element)].get_attribute('src')
 
             url = element.find_elements_by_xpath("//a[contains(@href, '/vehicle/')]")[elements.index(element)].get_attribute('href')
 
@@ -299,7 +293,7 @@ def tesla_m3_scrape():
     tesla_m3_df = pd.DataFrame(data)
     print(tesla_m3_df)
     browser.get(tesla_m3)
-    browser.maximize_window()
+    time.sleep(2)
     browser.set_page_load_timeout(20)
     next_button = True
     last_url = ''
@@ -329,6 +323,7 @@ def tesla_m3_scrape():
     main_title = browser.title
     print(main_title)
     scroll_down()
+    time.sleep(2)
     browser.execute_script("window.scrollTo(0, 220)")
     elements = browser.find_elements_by_class_name('result.card')
     time.sleep(1)
@@ -355,7 +350,7 @@ def tesla_m3_scrape():
             main_window = browser.current_window_handle
             browser.switch_to_window(main_window)
             browser.switch_to.window(browser.window_handles[count])
-            url = browser.current_url
+            url = browser.current_url[:48]
             count += 1
             browser.switch_to.window(browser.window_handles[0])
 
@@ -399,7 +394,7 @@ def tesla_ms_scrape():
     tesla_ms_df = pd.DataFrame(data)
     print(tesla_ms_df)
     browser.get(tesla_ms)
-    browser.maximize_window()
+    time.sleep(2)
     browser.set_page_load_timeout(20)
     next_button = True
     last_url = ''
@@ -429,6 +424,7 @@ def tesla_ms_scrape():
     main_title = browser.title
     print(main_title)
     scroll_down()
+    time.sleep(2)
     browser.execute_script("window.scrollTo(0, 220)")
     elements = browser.find_elements_by_class_name('result.card')
     time.sleep(1)
@@ -455,7 +451,7 @@ def tesla_ms_scrape():
             main_window = browser.current_window_handle
             browser.switch_to_window(main_window)
             browser.switch_to.window(browser.window_handles[count])
-            url = browser.current_url
+            url = browser.current_url[:48]
             count += 1
             browser.switch_to.window(browser.window_handles[0])
 
@@ -499,7 +495,7 @@ def tesla_my_scrape():
     tesla_my_df = pd.DataFrame(data)
     print(tesla_my_df)
     browser.get(tesla_my)
-    browser.maximize_window()
+    time.sleep(2)
     browser.set_page_load_timeout(20)
     next_button = True
     last_url = ''
@@ -529,6 +525,7 @@ def tesla_my_scrape():
     main_title = browser.title
     print(main_title)
     scroll_down()
+    time.sleep(2)
     browser.execute_script("window.scrollTo(0, 220)")
     elements = browser.find_elements_by_class_name('result.card')
     time.sleep(1)
@@ -555,7 +552,7 @@ def tesla_my_scrape():
             main_window = browser.current_window_handle
             browser.switch_to_window(main_window)
             browser.switch_to.window(browser.window_handles[count])
-            url = browser.current_url
+            url = browser.current_url[:48]
             count += 1
             browser.switch_to.window(browser.window_handles[0])
 
@@ -599,7 +596,7 @@ def tesla_mx_scrape():
     tesla_mx_df = pd.DataFrame(data)
     print(tesla_mx_df)
     browser.get(tesla_mx)
-    browser.maximize_window()
+    time.sleep(2)
     browser.set_page_load_timeout(20)
     next_button = True
     last_url = ''
@@ -626,6 +623,7 @@ def tesla_mx_scrape():
     main_title = browser.title
     print(main_title)
     scroll_down()
+    time.sleep(2)
     browser.execute_script("window.scrollTo(0, 220)")
     elements = browser.find_elements_by_class_name('result.card')
     time.sleep(1)
@@ -652,7 +650,7 @@ def tesla_mx_scrape():
             main_window = browser.current_window_handle
             browser.switch_to_window(main_window)
             browser.switch_to.window(browser.window_handles[count])
-            url = browser.current_url
+            url = browser.current_url[:48]
             count += 1
             browser.switch_to.window(browser.window_handles[0])
 
@@ -690,18 +688,24 @@ t5 = threading.Thread(target = tesla_m3_scrape)
 t6 = threading.Thread(target = tesla_mx_scrape)
 t7 = threading.Thread(target = tesla_my_scrape)
 
-t1.start()
-# t2.start()
-#t3.start()
-# t4.start()
-# t5.start()
-# t6.start()
-# t7.start()
+def runall():
+    t1.start()
+    t2.start()
+    t3.start()
+    t4.start()
+    t5.start()
+    t6.start()
+    t7.start()
 
-t1.join()
-# t2.join()
-#t3.join()
-# t4.join()
-# t5.join()
-# t6.join()
-# t7.join()
+    t1.join()
+    t2.join()
+    t3.join()
+    t4.join()
+    t5.join()
+    t6.join()
+    t7.join()
+
+# runall()
+tesla_ms_scrape()
+# tesla_m3_scrape()
+# vroom_scrape()
