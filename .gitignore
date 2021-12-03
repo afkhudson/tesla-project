@@ -1,0 +1,71 @@
+compile data.py
+tesla scraper.py
+all_data/20210904 all data.csv
+all_data/20210906 all data.csv
+all_data/20210908 all data.csv
+all_data/20210909 all data.csv
+all_data/20210910 all data.csv
+all_data/20210918 all data.csv
+all_data/20210920 all data.csv
+all_data/20210922 all data.csv
+carvana/20210904 carvana-test.xlsx
+carvana/20210906 carvana-test.xlsx
+carvana/20210908 carvana-test.xlsx
+carvana/20210909 carvana-test.xlsx
+carvana/20210910 carvana-test.xlsx
+carvana/20210918 carvana-test.xlsx
+carvana/20210920 carvana-test.xlsx
+carvana/20210922 carvana-test.xlsx
+carvana/20211115 carvana-test.xlsx
+shift/20210904 shift-test.xlsx
+shift/20210906 shift-test.xlsx
+shift/20210908 shift-test.xlsx
+shift/20210910 shift-test.xlsx
+shift/20210918 shift-test.xlsx
+shift/20210920 shift-test.xlsx
+shift/20210922 shift-test.xlsx
+shift/20211022 shift-test.xlsx
+tesla_m3/20210904 tesla_m3-test.xlsx
+tesla_m3/20210906 tesla_m3-test.xlsx
+tesla_m3/20210908 tesla_m3-test.xlsx
+tesla_m3/20210910 tesla_m3-test.xlsx
+tesla_m3/20210918 tesla_m3-test.xlsx
+tesla_m3/20210920 tesla_m3-test.xlsx
+tesla_m3/20210922 tesla_m3-test.xlsx
+tesla_m3/20211022 tesla_m3-test.xlsx
+tesla_m3/20211115 tesla_m3-test.xlsx
+tesla_ms/20210904 tesla_ms-test.xlsx
+tesla_ms/20210906 tesla_ms-test.xlsx
+tesla_ms/20210908 tesla_ms-test.xlsx
+tesla_ms/20210910 tesla_ms-test.xlsx
+tesla_ms/20210918 tesla_ms-test.xlsx
+tesla_ms/20210920 tesla_ms-test.xlsx
+tesla_ms/20210922 tesla_ms-test.xlsx
+tesla_ms/20211022 tesla_ms-test.xlsx
+tesla_ms/20211115 tesla_ms-test.xlsx
+tesla_mx/20210904 tesla_mx-test.xlsx
+tesla_mx/20210906 tesla_mx-test.xlsx
+tesla_mx/20210908 tesla_mx-test.xlsx
+tesla_mx/20210910 tesla_mx-test.xlsx
+tesla_mx/20210918 tesla_mx-test.xlsx
+tesla_mx/20210920 tesla_mx-test.xlsx
+tesla_mx/20210922 tesla_mx-test.xlsx
+tesla_mx/20211022 tesla_mx-test.xlsx
+tesla_mx/20211115 tesla_mx-test.xlsx
+tesla_my/20210904 tesla_my-test.xlsx
+tesla_my/20210906 tesla_my-test.xlsx
+tesla_my/20210908 tesla_my-test.xlsx
+tesla_my/20210910 tesla_my-test.xlsx
+tesla_my/20210918 tesla_my-test.xlsx
+tesla_my/20210920 tesla_my-test.xlsx
+tesla_my/20210922 tesla_my-test.xlsx
+tesla_my/20211022 tesla_my-test.xlsx
+tesla_my/20211115 tesla_my-test.xlsx
+tesla_my/20211125 tesla_my-test.xlsx
+vroom/20210904 vroom-test.xlsx
+vroom/20210906 vroom-test.xlsx
+vroom/20210908 vroom-test.xlsx
+vroom/20210910 vroom-test.xlsx
+vroom/20210918 vroom-test.xlsx
+vroom/20210920 vroom-test.xlsx
+vroom/20210922 vroom-test.xlsx
