@@ -14,6 +14,7 @@ from datetime import date
 from datetime import datetime
 import threading
 
+#start
 
 today = date.today()
 d4 = today.strftime("%Y%m%d")
@@ -100,7 +101,7 @@ def vroom_scrape():
             print(url, model, year, price, miles, type, color, status, image)
             new_row = {'url': url, 'model': model, 'year': int(year), 'price': int(num_price), 'miles': int(num_miles), 'type': type, 'color': color, 'status': status, 'image': image}
             vroom_df = vroom_df.append(new_row, ignore_index=True)
-        next_button_clickable = browser.find_elements_by_xpath('/html/body/div[1]/div/div/div[3]/div/nav/ul/li[9]')
+        next_button_clickable = browser.find_elements_by_css_selector('svg.MuiSvgIcon-root.MuiPaginationItem-icon')
         print(len(next_button_clickable))
         last_url = browser.current_url
         next_button_clickable[0].click()
@@ -277,88 +278,6 @@ def carvana_scrape():
     print(carvana_df)
     print('no more pages')
 
-<<<<<<< HEAD
-=======
-def tesla_m3_scrape():
-    browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-    data = {'url': [],
-	'model': [],
-	'year': [],
-    'price': [],
-    'miles': [],
-    'type': [],
-    'color': [],
-	'status': [],
-    'image': []}
-
-
-    tesla_m3_df = pd.DataFrame(data)
-    print(tesla_m3_df)
-    browser.get(tesla_m3)
-    time.sleep(2)
-    browser.set_page_load_timeout(20)
-    next_button = True
-    last_url = ''
-
-    def scroll_down():
-        """A method for scrolling the page."""
-
-        # Get scroll height.
-        last_height = browser.execute_script("return document.body.scrollHeight")
-
-        while True:
-
-            # Scroll down to the bottom.
-            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-            # Wait to load the page.
-            time.sleep(2)
-
-            # Calculate new scroll height and compare with last scroll height.
-            new_height = browser.execute_script("return document.body.scrollHeight")
-
-            if new_height == last_height:
-
-                break
-
-            last_height = new_height
-    main_title = browser.title
-    print(main_title)
-    scroll_down()
-    time.sleep(2)
-    browser.execute_script("window.scrollTo(0, 220)")
-    elements = browser.find_elements_by_class_name('result.card')
-    time.sleep(1)
-    print(elements)
-    print(f'found: {len(elements)}')
-    #go through each element of first page
-    count = 1
-    for element in elements:
-        try:
-            scroll_to = element.find_element_by_class_name('result-gallery')
-            #model_check = element.find_elements_by_class_name('model')
-            #url_check = element.find_elements_by_xpath(f'/html/body/div[2]/main/section/section/article[{elements.index(element)+1}]/a')
-            #check available
-            image = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[2]/div/ul/li[1]/div/div[2]/img').get_attribute('src')
-            buy_button = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[3]/div[1]/button[1]')
-            hover = element.find_element_by_class_name('result-features')
-            browser.execute_script("arguments[0].scrollIntoView();", scroll_to)
-            time.sleep(0.5)
-            action = ActionChains(browser)
-            action.move_to_element(hover)
-            action.perform()
-            buy_button.click()
-
-            main_window = browser.current_window_handle
-            browser.switch_to_window(main_window)
-            browser.switch_to.window(browser.window_handles[count])
-            url = browser.current_url[:48]
-            count += 1
-            browser.switch_to.window(browser.window_handles[0])
-
-            model = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/h3/span[2]').get_attribute('innerHTML')
-            year = int(element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/h3/span[1]').get_attribute('innerHTML'))
->>>>>>> 2d23bfb0e61282342746a539c3866523fa38879f
 
 def tesla_scrape(site, name):
     browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
@@ -373,15 +292,9 @@ def tesla_scrape(site, name):
     'image': []}
 
 
-<<<<<<< HEAD
     tesla_df = pd.DataFrame(data)
     print(tesla_df)
     browser.get(site)
-=======
-    tesla_ms_df = pd.DataFrame(data)
-    print(tesla_ms_df)
-    browser.get(tesla_ms)
->>>>>>> 2d23bfb0e61282342746a539c3866523fa38879f
     time.sleep(2)
     browser.set_page_load_timeout(20)
     next_button = True
@@ -421,7 +334,6 @@ def tesla_scrape(site, name):
     #go through each element of first page
     count = 1
     for element in elements:
-<<<<<<< HEAD
         # try:
         scroll_to = element.find_element_by_class_name('result-gallery')
         #model_check = element.find_elements_by_class_name('model')
@@ -464,253 +376,9 @@ def tesla_scrape(site, name):
         # except:
         #     print('error in element')
         #     new_row = {'url': 'error', 'model': 'error', 'year': 'error', 'price': 'error', 'miles': 'error', 'type': 'error', 'color': 'error', 'status': 'error', 'image': 'error'}
-        #     tesla_ms_df = tesla_ms_df.append(new_row, ignore_index=True)
+        #     tesla_df = tesla_df.append(new_row, ignore_index=True)
     writer = pd.ExcelWriter(f'C:/Users/sosa/OneDrive/Coding/tesla-project/{name}/{d4} {name}-test.xlsx')
     tesla_df.to_excel(writer, index=False)
-=======
-        try:
-            scroll_to = element.find_element_by_class_name('result-gallery')
-            #model_check = element.find_elements_by_class_name('model')
-            #url_check = element.find_elements_by_xpath(f'/html/body/div[2]/main/section/section/article[{elements.index(element)+1}]/a')
-            #check available
-            image = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[2]/div/ul/li[1]/div/div[2]/img').get_attribute('src')
-            buy_button = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[3]/div[1]/button[1]')
-            hover = element.find_element_by_class_name('result-features')
-            browser.execute_script("arguments[0].scrollIntoView();", scroll_to)
-            time.sleep(0.5)
-            action = ActionChains(browser)
-            action.move_to_element(hover)
-            action.perform()
-            buy_button.click()
-
-            main_window = browser.current_window_handle
-            browser.switch_to_window(main_window)
-            browser.switch_to.window(browser.window_handles[count])
-            url = browser.current_url[:48]
-            count += 1
-            browser.switch_to.window(browser.window_handles[0])
-
-            model = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/h3/span[2]').get_attribute('innerHTML')
-            year = int(element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/h3/span[1]').get_attribute('innerHTML'))
-
-            price = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[2]/div[1]/span').get_attribute('innerHTML')
-            num_price = ''.join(filter(lambda x: x.isdigit(), price))
-
-            miles = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/div[2]').get_attribute('innerHTML')[:-14]
-            num_miles = ''.join(filter(lambda x: x.isdigit(), miles))
-
-            type = element.find_element_by_class_name(f'tds-text_color--10').get_attribute('innerHTML')
-            color = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[4]/ul[2]/li[1]').get_attribute('innerHTML')
-            print(url, model, year, num_price, num_miles, type, color, 'Available Now', image)
-            new_row = {'url': url, 'model': model, 'year': int(year), 'price': int(num_price), 'miles': int(num_miles), 'type': type, 'color': color, 'status': 'Available Now', 'image': image}
-            tesla_ms_df = tesla_ms_df.append(new_row, ignore_index=True)
-        except:
-            print('error in element')
-            new_row = {'url': 'error', 'model': 'error', 'year': 'error', 'price': 'error', 'miles': 'error', 'type': 'error', 'color': 'error', 'status': 'error', 'image': 'error'}
-            tesla_ms_df = tesla_ms_df.append(new_row, ignore_index=True)
-    writer = pd.ExcelWriter(f'C:/Users/sosa/OneDrive/Coding/tesla-project/tesla_ms/{d4} tesla_ms-test.xlsx')
-    tesla_ms_df.to_excel(writer, index=False)
-    writer.save()
-    print(tesla_ms_df)
-    print('no more pages')
-
-def tesla_my_scrape():
-    browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-    data = {'url': [],
-	'model': [],
-	'year': [],
-    'price': [],
-    'miles': [],
-    'type': [],
-    'color': [],
-	'status': [],
-    'image': []}
-
-
-    tesla_my_df = pd.DataFrame(data)
-    print(tesla_my_df)
-    browser.get(tesla_my)
-    time.sleep(2)
-    browser.set_page_load_timeout(20)
-    next_button = True
-    last_url = ''
-
-    def scroll_down():
-        """A method for scrolling the page."""
-
-        # Get scroll height.
-        last_height = browser.execute_script("return document.body.scrollHeight")
-
-        while True:
-
-            # Scroll down to the bottom.
-            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-            # Wait to load the page.
-            time.sleep(2)
-
-            # Calculate new scroll height and compare with last scroll height.
-            new_height = browser.execute_script("return document.body.scrollHeight")
-
-            if new_height == last_height:
-
-                break
-
-            last_height = new_height
-    main_title = browser.title
-    print(main_title)
-    scroll_down()
-    time.sleep(2)
-    browser.execute_script("window.scrollTo(0, 220)")
-    elements = browser.find_elements_by_class_name('result.card')
-    time.sleep(1)
-    print(elements)
-    print(f'found: {len(elements)}')
-    #go through each element of first page
-    count = 1
-    for element in elements:
-        try:
-            scroll_to = element.find_element_by_class_name('result-gallery')
-            #model_check = element.find_elements_by_class_name('model')
-            #url_check = element.find_elements_by_xpath(f'/html/body/div[2]/main/section/section/article[{elements.index(element)+1}]/a')
-            #check available
-            image = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[2]/div/ul/li[1]/div/div[2]/img').get_attribute('src')
-            buy_button = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[3]/div[1]/button[1]')
-            hover = element.find_element_by_class_name('result-features')
-            browser.execute_script("arguments[0].scrollIntoView();", scroll_to)
-            time.sleep(0.5)
-            action = ActionChains(browser)
-            action.move_to_element(hover)
-            action.perform()
-            buy_button.click()
-
-            main_window = browser.current_window_handle
-            browser.switch_to_window(main_window)
-            browser.switch_to.window(browser.window_handles[count])
-            url = browser.current_url[:48]
-            count += 1
-            browser.switch_to.window(browser.window_handles[0])
-
-            model = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/h3/span[2]').get_attribute('innerHTML')
-            year = int(element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/h3/span[1]').get_attribute('innerHTML'))
-
-            price = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[2]/div[1]/span').get_attribute('innerHTML')
-            num_price = ''.join(filter(lambda x: x.isdigit(), price))
-
-            miles = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/div[2]').get_attribute('innerHTML')[:-14]
-            num_miles = ''.join(filter(lambda x: x.isdigit(), miles))
-
-            type = element.find_element_by_class_name(f'tds-text_color--10').get_attribute('innerHTML')
-            color = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[4]/ul[2]/li[1]').get_attribute('innerHTML')
-            print(url, model, year, num_price, num_miles, type, color, 'Available Now', image)
-            new_row = {'url': url, 'model': model, 'year': int(year), 'price': int(num_price), 'miles': int(num_miles), 'type': type, 'color': color, 'status': 'Available Now', 'image': image}
-            tesla_my_df = tesla_my_df.append(new_row, ignore_index=True)
-        except:
-            print('error in element')
-            new_row = {'url': 'error', 'model': 'error', 'year': 'error', 'price': 'error', 'miles': 'error', 'type': 'error', 'color': 'error', 'status': 'error', 'image': 'error'}
-            tesla_my_df = tesla_my_df.append(new_row, ignore_index=True)
-    writer = pd.ExcelWriter(f'C:/Users/sosa/OneDrive/Coding/tesla-project/tesla_my/{d4} tesla_my-test.xlsx')
-    tesla_my_df.to_excel(writer, index=False)
-    writer.save()
-    print(tesla_my_df)
-    print('no more pages')
-
-def tesla_mx_scrape():
-    browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-    data = {'url': [],
-	'model': [],
-	'year': [],
-    'price': [],
-    'miles': [],
-    'type': [],
-    'color': [],
-	'status': [],
-    'image': []}
-
-
-    tesla_mx_df = pd.DataFrame(data)
-    print(tesla_mx_df)
-    browser.get(tesla_mx)
-    time.sleep(2)
-    browser.set_page_load_timeout(20)
-    next_button = True
-    last_url = ''
-
-    def scroll_down():
-        """A method for scrolling the page."""
-
-        # Get scroll height.
-        last_height = browser.execute_script("return document.body.scrollHeight")
-
-        while True:
-
-            # Scroll down to the bottom.
-            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            # Wait to load the page.
-            time.sleep(2)
-            # Calculate new scroll height and compare with last scroll height.
-            new_height = browser.execute_script("return document.body.scrollHeight")
-            if new_height == last_height:
-
-                break
-
-            last_height = new_height
-    main_title = browser.title
-    print(main_title)
-    scroll_down()
-    time.sleep(2)
-    browser.execute_script("window.scrollTo(0, 220)")
-    elements = browser.find_elements_by_class_name('result.card')
-    time.sleep(1)
-    print(elements)
-    print(f'found: {len(elements)}')
-    #go through each element of first page
-    count = 1
-    for element in elements:
-        try:
-            scroll_to = element.find_element_by_class_name('result-gallery')
-            #model_check = element.find_elements_by_class_name('model')
-            #url_check = element.find_elements_by_xpath(f'/html/body/div[2]/main/section/section/article[{elements.index(element)+1}]/a')
-            #check available
-            image = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[2]/div/ul/li[1]/div/div[2]/img').get_attribute('src')
-            buy_button = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[3]/div[1]/button[1]')
-            hover = element.find_element_by_class_name('result-features')
-            browser.execute_script("arguments[0].scrollIntoView();", scroll_to)
-            time.sleep(0.5)
-            action = ActionChains(browser)
-            action.move_to_element(hover)
-            action.perform()
-            buy_button.click()
-
-            main_window = browser.current_window_handle
-            browser.switch_to_window(main_window)
-            browser.switch_to.window(browser.window_handles[count])
-            url = browser.current_url[:48]
-            count += 1
-            browser.switch_to.window(browser.window_handles[0])
-
-            model = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/h3/span[2]').get_attribute('innerHTML')
-            year = int(element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/h3/span[1]').get_attribute('innerHTML'))
-
-            price = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[2]/div[1]/span').get_attribute('innerHTML')
-            num_price = ''.join(filter(lambda x: x.isdigit(), price))
-
-            miles = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[1]/div[1]/div[2]').get_attribute('innerHTML')[:-14]
-            num_miles = ''.join(filter(lambda x: x.isdigit(), miles))
-
-            type = element.find_element_by_class_name(f'tds-text_color--10').get_attribute('innerHTML')
-            color = element.find_element_by_xpath(f'//*[@id="iso-container"]/div/div[1]/main/div/article[{elements.index(element)+1}]/section[4]/ul[2]/li[1]').get_attribute('innerHTML')
-            print(url, model, year, num_price, num_miles, type, color, 'Available Now', image)
-            new_row = {'url': url, 'model': model, 'year': int(year), 'price': int(num_price), 'miles': int(num_miles), 'type': type, 'color': color, 'status': 'Available Now', 'image': image}
-            tesla_mx_df = tesla_mx_df.append(new_row, ignore_index=True)
-        except:
-            print('error in element')
-            new_row = {'url': 'error', 'model': 'error', 'year': 'error', 'price': 'error', 'miles': 'error', 'type': 'error', 'color': 'error', 'status': 'error', 'image': 'error'}
-            tesla_mx_df = tesla_mx_df.append(new_row, ignore_index=True)
-        #time.sleep(0.5)
-    writer = pd.ExcelWriter(f'C:/Users/sosa/OneDrive/Coding/tesla-project/tesla_mx/{d4} tesla_mx-test.xlsx')
-    tesla_mx_df.to_excel(writer, index=False)
->>>>>>> 2d23bfb0e61282342746a539c3866523fa38879f
     writer.save()
     print(tesla_df)
     print('no more pages')
@@ -719,24 +387,16 @@ def tesla_mx_scrape():
 t1 = threading.Thread(target = shift_scrape)
 t2 = threading.Thread(target = vroom_scrape)
 t3 = threading.Thread(target = carvana_scrape)
-<<<<<<< HEAD
 t4 = threading.Thread(target = tesla_scrape, args = (tesla_ms,'tesla_ms',))
 t6 = threading.Thread(target = tesla_scrape, args = (tesla_m3,'tesla_m3',))
 t5 = threading.Thread(target = tesla_scrape, args = (tesla_mx,'tesla_mx',))
 t7 = threading.Thread(target = tesla_scrape, args = (tesla_my,'tesla_my',))
-=======
-t4 = threading.Thread(target = tesla_ms_scrape)
-t5 = threading.Thread(target = tesla_m3_scrape)
-t6 = threading.Thread(target = tesla_mx_scrape)
-t7 = threading.Thread(target = tesla_my_scrape)
->>>>>>> 2d23bfb0e61282342746a539c3866523fa38879f
 
 def runall():
     t1.start()
     t2.start()
     t3.start()
     t4.start()
-<<<<<<< HEAD
     time.sleep(5)
     t5.start()
     time.sleep(5)
@@ -744,11 +404,6 @@ def runall():
     time.sleep(5)
     t7.start()
     time.sleep(5)
-=======
-    t5.start()
-    t6.start()
-    t7.start()
->>>>>>> 2d23bfb0e61282342746a539c3866523fa38879f
 
     t1.join()
     t2.join()
@@ -758,15 +413,8 @@ def runall():
     t6.join()
     t7.join()
 
-<<<<<<< HEAD
-runall()
+#runall()
 # tesla_ms_scrape()
 # tesla_m3_scrape()
-# vroom_scrape()
-# tesla_scrape(tesla_ms,'tesla_ms')
-=======
-# runall()
-tesla_ms_scrape()
-# tesla_m3_scrape()
-# vroom_scrape()
->>>>>>> 2d23bfb0e61282342746a539c3866523fa38879f
+vroom_scrape()
+# tesla_scrape(tesla_mx,'tesla_mx')
